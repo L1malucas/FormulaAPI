@@ -1,3 +1,5 @@
+using FormulaAPI.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,14 +19,18 @@ builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiIn
     License = null,
 }));
 
+builder.Services.AddDbContext<ApiDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("LocalConnection")));
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Using swagger in production
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    //   options.RoutePrefix = string.Empty; Means the route "localhost/" will show swagger,if you haven't this line API will launch "localhost/swagger/index"
+    // options.RoutePrefix = string.Empty;
+});
+
 
 app.UseHttpsRedirection();
 
