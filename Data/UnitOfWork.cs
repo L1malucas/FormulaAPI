@@ -9,20 +9,20 @@ public class UnitOfWork : IUnityOfWork, IDisposable
 
     private readonly ILogger _logger;
 
-    public UnitOfWork(ApiDbContext context, ILogger logger)
+    public UnitOfWork(ApiDbContext context, ILoggerFactory loggerFactory)
     {
         _context = context;
-        _logger = logger;
+        var _logger = loggerFactory.CreateLogger("logs");
 
-        Drivers = new DriverRepository(_context, logger);
+        Drivers = new DriverRepository(_context, _logger);
     }
-    public IDriverRepository Drivers { get; }
 
     public void Dispose()
     {
         _context.Dispose();
     }
-    
+    public IDriverRepository Drivers { get; }
+
     public async Task CompleteAsync()
     {
         await _context.SaveChangesAsync();

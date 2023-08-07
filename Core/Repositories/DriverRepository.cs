@@ -21,6 +21,19 @@ public class DriverRepository : GenericRepository<Driver>, IDriverRepository
             throw;
         }
     }
+
+    public override async Task<Driver?> GetId(int id)
+    {
+        try
+        {
+            return await Context.Drivers.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     public async Task<Driver?> GetDriverId(int driverNumber)
     {
         try
