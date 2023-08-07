@@ -1,3 +1,4 @@
+using FormulaAPI.Core;
 using FormulaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -20,6 +21,9 @@ builder.Services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiIn
 }));
 
 builder.Services.AddDbContext<ApiDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("LocalConnection")));
+
+builder.Services.AddScoped<IUnityOfWork, UnitOfWork>();
+
 var app = builder.Build();
 
 // Using swagger in production
