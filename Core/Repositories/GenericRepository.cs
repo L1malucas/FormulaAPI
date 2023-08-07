@@ -5,13 +5,13 @@ namespace FormulaAPI.Core.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
+    protected readonly ApiDbContext Context;
+
+    private readonly DbSet<T> DbSet;
+
     protected readonly ILogger Logger;
 
-    protected ApiDbContext Context;
-
-    internal DbSet<T?> DbSet;
-
-    public GenericRepository(
+    protected GenericRepository(
         ApiDbContext context,
         ILogger logger)
     {
@@ -20,7 +20,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         DbSet = context.Set<T>();
     }
 
-    public virtual async Task<IEnumerable<T>> All()
+    public virtual async Task<IEnumerable<T?>> All()
     {
         return await DbSet.AsNoTracking().ToListAsync();
     }
@@ -36,15 +36,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return true;
     }
 
-    public virtual async Task<bool> Update(T entity)
+    public virtual Task<bool> Update(T entity)
     {
         DbSet.Update(entity);
-        return true;
+        return Task.FromResult(true);
     }
 
-    public virtual async Task<bool> Delete(T entity)
+    public virtual Task<bool> Delete(T entity)
     {
         DbSet.Remove(entity);
-        return true;
+        return Task.FromResult(true);
     }
 }

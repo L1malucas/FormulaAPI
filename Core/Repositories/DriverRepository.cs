@@ -8,7 +8,7 @@ public class DriverRepository : GenericRepository<Driver>, IDriverRepository
 {
     public DriverRepository(ApiDbContext context, ILogger logger) : base(context, logger) {}
 
-    public override async Task<IEnumerable<Driver>> All()
+    public override async Task<IEnumerable<Driver?>> All()
     {
         try
         {

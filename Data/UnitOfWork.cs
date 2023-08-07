@@ -7,14 +7,13 @@ public class UnitOfWork : IUnityOfWork, IDisposable
 {
     private readonly ApiDbContext _context;
 
-    private readonly ILogger _logger;
 
     public UnitOfWork(ApiDbContext context, ILoggerFactory loggerFactory)
     {
         _context = context;
-        var _logger = loggerFactory.CreateLogger("logs");
+        var logger = loggerFactory.CreateLogger("logs");
 
-        Drivers = new DriverRepository(_context, _logger);
+        Drivers = new DriverRepository(_context, logger);
     }
 
     public void Dispose()
